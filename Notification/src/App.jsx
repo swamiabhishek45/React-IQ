@@ -2,12 +2,11 @@ import { useState } from "react";
 import "./App.css";
 import Card from "./components/card/Card";
 import Navbar from "./components/navbar/Navbar";
+import { posts } from "./data";
 
 function App() {
     const [username, setUsername] = useState("");
     const [user, setUser] = useState("");
-
-    console.log(user);
 
     return (
         <>
@@ -15,12 +14,14 @@ function App() {
                 {user ? (
                     <>
                         <Navbar />
-                        <Card />
+                        {posts.map((post) => (
+                            <Card key={post.id} post={post} />
+                        ))}
                         <span className="username">{username}</span>
                     </>
                 ) : (
                     <div className="login">
-                      <h1>Login</h1>
+                        <h1>Login</h1>
                         <input
                             type="text"
                             placeholder="Enter username"

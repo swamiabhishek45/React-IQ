@@ -1,0 +1,34 @@
+.card{
+    height: 280px;
+}
+
+.info{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0px;
+}
+
+.userImg{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.postImg{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+
+}
+
+.interaction{
+    display: flex;
+    gap: 10px;
+}
+
+.icon{
+    width: 20px;
+    cursor: pointer;
+
+}
