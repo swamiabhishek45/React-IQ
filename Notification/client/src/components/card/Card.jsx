@@ -5,16 +5,21 @@ import HeartFilled from "../../assets/heart-solid.svg";
 import Comment from "../../assets/comment.svg";
 import Share from "../../assets/share.svg";
 
-function Card({ post }) {
+function Card({ post, socket, user }) {
     const [like, setLike] = useState(false);
 
-    const handleLike = () => {
+    const handleNotification = (type) => {
         setLike(true);
-    }
-    
-    const handleUnlike = () => {
-        setLike(false)
-    }
+        socket.emit("sendNotification", {
+            senderName: user,
+            receiverName: post.usernmae,
+            type,
+        });
+    };
+
+    const handleDislike = () => {
+        setLike(false);
+    };
 
     return (
         <div className="card">
@@ -25,13 +30,31 @@ function Card({ post }) {
             <img src={post.postImg} className="postImg" alt="post" />
             <div className="interaction">
                 {like ? (
-                    <img src={HeartFilled} className="icon" onClick={handleUnlike} />
+                    <img
+                        src={HeartFilled}
+                        className="icon"
+                        onClick={handleDislike}
+                    />
                 ) : (
-                    <img src={Heart} className="icon" onClick={handleLike} />
+                    <img
+                        src={Heart}
+                        className="icon"
+                        onClick={() => handleNotification(1)}
+                    />
                 )}
 
-                <img src={Comment} className="icon" alt="" />
-                <img src={Share} className="icon" alt="" />
+                <img
+                    src={Comment}
+                    className="icon"
+                    onClick={() => handleNotification(2)}
+                    alt=""
+                />
+                <img
+                    src={Share}
+                    className="icon"
+                    onClick={() => handleNotification(3)}
+                    alt=""
+                />
             </div>
         </div>
     );
