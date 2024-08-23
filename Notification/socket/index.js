@@ -22,7 +22,7 @@ const getUser = (username) => {
 };
 
 io.on("connection", (socket) => {
-    console.log("Someone is connected!!");
+    // console.log("Someone is connected!!");
 
     // client --> server
     socket.on("newUser", (username) => {
@@ -40,7 +40,7 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         removeUser(socket.id);
-        console.log("Someone is disconnected!!");
+        // console.log("Someone is disconnected!!");
     });
 });
 

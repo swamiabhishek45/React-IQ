@@ -23,7 +23,7 @@ function App() {
             <div className="container">
                 {user ? (
                     <>
-                        <Navbar socket={socket} />
+                        <Navbar socket={socket} username={username} />
                         {posts.map((post) => (
                             <Card
                                 key={post.id}
@@ -32,7 +32,7 @@ function App() {
                                 user={user}
                             />
                         ))}
-                        <span className="username">{username}</span>
+                        {/* <span className="username">{username}</span> */}
                     </>
                 ) : (
                     <div className="login">

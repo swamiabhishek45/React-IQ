@@ -12,7 +12,7 @@ function Card({ post, socket, user }) {
         setLike(true);
         socket.emit("sendNotification", {
             senderName: user,
-            receiverName: post.usernmae,
+            receiverName: post.username,
             type,
         });
     };
