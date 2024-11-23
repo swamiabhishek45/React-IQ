@@ -1,14 +1,17 @@
 import React from "react";
-import { useAppSelector } from "../hooks";
+import { useAppDispatch, useAppSelector } from "../hooks";
 import { Box, Grid } from "@mui/system";
 import { Button, Paper, Typography } from "@mui/material";
-import  CheckCircleIcon  from "@mui/icons-material/CheckCircle";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { deleteHabit, toggleHabit } from "../store/features/habitSlice";
 
 const HabitList: React.FC = () => {
     const { habits } = useAppSelector((state) => state.habits);
 
     const today = new Date().toISOString().split("T")[0];
+
+    const dispatch = useAppDispatch();
 
     return (
         <Box
@@ -19,9 +22,9 @@ const HabitList: React.FC = () => {
                 mt: "1rem",
             }}
         >
-            {habits.map((habit) => {
+            {habits.map((habit, index) => {
                 return (
-                    <Paper key={habit.id} elevation={2} sx={{ p: 2 }}>
+                    <Paper key={index} elevation={2} sx={{ p: 2 }}>
                         <Grid container alignItems="center">
                             <Grid size={{ xs: 12, md: 6 }}>
                                 <Typography variant="h6">
@@ -51,6 +54,14 @@ const HabitList: React.FC = () => {
                                                 : "primary"
                                         }
                                         startIcon={<CheckCircleIcon />}
+                                        onClick={() =>
+                                            dispatch(
+                                                toggleHabit({
+                                                    id: habit.id,
+                                                    date: today,
+                                                })
+                                            )
+                                        }
                                     >
                                         {habit.completedDates.includes(today)
                                             ? "Completed"
@@ -60,6 +71,11 @@ const HabitList: React.FC = () => {
                                         variant="outlined"
                                         color="error"
                                         startIcon={<DeleteIcon />}
+                                        onClick={() =>
+                                            dispatch(
+                                                deleteHabit({ id: habit.id })
+                                            )
+                                        }
                                     >
                                         Delete
                                     </Button>

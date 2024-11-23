@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define a type for the slice state
 export interface Habit {
-    id: number;
+    id: string;
     name: string;
     frequency: "daily" | "weekly" | "monthly";
     completedDates: string[];
@@ -29,19 +29,40 @@ export const habitSlice = createSlice({
                 frequency: "daily" | "weekly" | "monthly";
             }>
         ) => {
-
             const newHabit: Habit = {
-                id: state.habits.length + 1,
+                id: new Date().toISOString(),
                 name: action.payload.name,
                 frequency: action.payload.frequency,
                 completedDates: [],
                 createdAt: new Date().toISOString(),
             };
+            
             state.habits.push(newHabit);
+        },
+
+        toggleHabit: (
+            state,
+            action: PayloadAction<{ id: string; date: string }>
+        ) => {
+            const habit = state.habits.find((h) => h.id === action.payload.id);
+
+            if (habit) {
+                const index = habit.completedDates.indexOf(action.payload.date);
+                if (index > -1) {
+                    habit.completedDates.splice(index, 1);
+                } else {
+                    habit.completedDates.push(action.payload.date);
+                }
+            }
+        },
+        deleteHabit: (state, action: PayloadAction<{ id: string }>) => {
+            state.habits = state.habits.filter(
+                (habit) => habit.id !== action.payload.id
+            );
         },
     },
 });
 
-export const { addHabit } = habitSlice.actions;
+export const { addHabit, toggleHabit, deleteHabit } = habitSlice.actions;
 
 export default habitSlice.reducer;
