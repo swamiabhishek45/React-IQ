@@ -1,9 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./features/counterSlice";
 import habitReducer from "./features/habitSlice";
 
 const rootReducer = combineReducers({
-    counter: counterReducer,
     habits: habitReducer,
 });
 

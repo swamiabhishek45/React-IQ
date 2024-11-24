@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define a type for the slice state
 export interface Habit {
@@ -12,11 +12,38 @@ export interface Habit {
 // Define the initial state using that type
 export interface HabitState {
     habits: Habit[];
+    isLoading: boolean;
+    error: string | null;
 }
 
 const initialState: HabitState = {
     habits: [],
-};
+    isLoading: false,
+    error: null,
+}; 
+
+export const fetchHabits = createAsyncThunk("habits/fetchHabits", async () => {
+    // simulating an API call
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const mockHabits: Habit[] = [
+        {
+            id: "1",
+            name: "Reading",
+            frequency: "daily",
+            completedDates: [],
+            createdAt: new Date().toISOString(),
+        },
+        {
+            id: "2",
+            name: "Jogging",
+            frequency: "daily",
+            completedDates: [],
+            createdAt: new Date().toISOString(),
+        },
+    ];
+    return mockHabits;
+});
 
 export const habitSlice = createSlice({
     name: "habits",
@@ -36,7 +63,7 @@ export const habitSlice = createSlice({
                 completedDates: [],
                 createdAt: new Date().toISOString(),
             };
-            
+
             state.habits.push(newHabit);
         },
 
@@ -60,6 +87,20 @@ export const habitSlice = createSlice({
                 (habit) => habit.id !== action.payload.id
             );
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchHabits.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(fetchHabits.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.habits = action.payload;
+            })
+            .addCase(fetchHabits.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message || "failed to fetch habits";
+            });
     },
 });
 
